@@ -1,14 +1,25 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { Routes, Route } from "react-router-dom";
+import { PlayerProvider } from "@/contexts/PlayerContext";
+import BottomNav from "@/components/BottomNav";
+import NowPlayingBar from "@/components/NowPlayingBar";
+import HomePage from "@/pages/HomePage";
+import SearchPage from "@/pages/SearchPage";
+import LibraryPage from "@/pages/LibraryPage";
+import ProfilePage from "@/pages/ProfilePage";
 
-const Index = () => {
+export default function Index() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <PlayerProvider>
+      <div className="relative min-h-screen bg-background">
+        <Routes>
+          <Route index element={<HomePage />} />
+          <Route path="search" element={<SearchPage />} />
+          <Route path="library" element={<LibraryPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+        </Routes>
+        <NowPlayingBar />
+        <BottomNav />
       </div>
-    </div>
+    </PlayerProvider>
   );
-};
-
-export default Index;
+}
