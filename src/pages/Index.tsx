@@ -6,6 +6,8 @@ import HomePage from "@/pages/HomePage";
 import SearchPage from "@/pages/SearchPage";
 import LibraryPage from "@/pages/LibraryPage";
 import ProfilePage from "@/pages/ProfilePage";
+import AuthPage from "@/pages/AuthPage";
+import ResetPasswordPage from "@/pages/ResetPasswordPage";
 
 export default function Index() {
   return (
@@ -16,6 +18,8 @@ export default function Index() {
           <Route path="search" element={<SearchPage />} />
           <Route path="library" element={<LibraryPage />} />
           <Route path="profile" element={<ProfilePage />} />
+          <Route path="auth" element={<AuthPage />} />
+          <Route path="reset-password" element={<ResetPasswordPage />} />
         </Routes>
         <NowPlayingBar />
         <BottomNav />
