@@ -3,10 +3,12 @@ import { usePlayer } from "@/contexts/PlayerContext";
 import { useState } from "react";
 
 export default function NowPlayingBar() {
-  const { currentSong, isPlaying, togglePlay, next, prev } = usePlayer();
+  const { currentSong, isPlaying, togglePlay, next, prev, progress, duration, seek, hasAudio } = usePlayer();
   const [liked, setLiked] = useState(false);
 
   if (!currentSong) return null;
+
+  const progressPct = duration > 0 ? (progress / duration) * 100 : 0;
 
   return (
     <div className="fixed bottom-[52px] left-0 right-0 z-40 border-t border-border bg-card/95 backdrop-blur-xl px-3 py-2">
@@ -47,8 +49,18 @@ export default function NowPlayingBar() {
       </div>
 
       {/* Progress bar */}
-      <div className="mt-1.5 h-0.5 w-full overflow-hidden rounded-full bg-muted">
-        <div className="h-full w-[35%] rounded-full bg-primary transition-all" />
+      <div
+        className="mt-1.5 h-0.5 w-full overflow-hidden rounded-full bg-muted cursor-pointer"
+        onClick={(e) => {
+          const rect = e.currentTarget.getBoundingClientRect();
+          const pct = (e.clientX - rect.left) / rect.width;
+          seek(pct);
+        }}
+      >
+        <div
+          className="h-full rounded-full bg-primary transition-all"
+          style={{ width: `${progressPct}%` }}
+        />
       </div>
     </div>
   );
