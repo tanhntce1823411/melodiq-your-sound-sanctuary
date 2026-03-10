@@ -22,6 +22,11 @@ async function getAccessToken(): Promise<string> {
     body: 'grant_type=client_credentials',
   });
 
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`Spotify token error: ${res.status} - ${errText}`);
+  }
+
   const data = await res.json();
   tokenCache = {
     token: data.access_token,
@@ -54,6 +59,13 @@ Deno.serve(async (req) => {
         `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=${limit}&market=VN`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      if (!res.ok) {
+        const errText = await res.text();
+        return new Response(JSON.stringify({ error: `Spotify API error: ${res.status}` }), {
+          status: res.status,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
       const data = await res.json();
 
       const tracks = (data.tracks?.items || []).map((t: any) => ({
