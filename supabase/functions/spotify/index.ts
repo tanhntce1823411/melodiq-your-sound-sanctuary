@@ -22,6 +22,11 @@ async function getAccessToken(): Promise<string> {
     body: 'grant_type=client_credentials',
   });
 
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`Spotify token error: ${res.status} - ${errText}`);
+  }
+
   const data = await res.json();
   tokenCache = {
     token: data.access_token,

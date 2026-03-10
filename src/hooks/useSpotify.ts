@@ -22,11 +22,6 @@ export function useSpotifySearch() {
     }
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("spotify", {
-        body: null,
-        method: "GET",
-      });
-      // supabase.functions.invoke doesn't support GET params well, use fetch directly
       const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
       const res = await fetch(
         `https://${projectId}.supabase.co/functions/v1/spotify?action=search&q=${encodeURIComponent(query)}&limit=20`,
